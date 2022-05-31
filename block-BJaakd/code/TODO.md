@@ -1,35 +1,32 @@
 1. Create a promise. Have it resolve with a value of `Promise Resolved!` in resolve after a delay of 1000ms, using `setTimeout`. Print the contents of the promise after it has been resolved by passing `console.log` to `.then`
 
 ```js
-let promise = Promise.resolve(
+let promise = new Promise((resolve,reject) =>{
     setTimeout(() => {
-      return "Promise Resolved!";
+      resolve("Promise Resolved!");
     },1000)
-  ).then((data) => {
-    console.log(data);
-  });
+});
+promise.then(console.log)
 ```
 
 2. Create another promise. Now have it reject with a value of `Rejected Promise!` without using `setTimeout`. Print the contents of the promise after it has been rejected by passing console.log to `.catch`
 
 ```js
 // Your code
-let promise = Promise.reject("Rejected Promise!").catch((data) => {
-    console.log(data);
-  });
+let promise = new Promise((resolve,reject) => {
+    reject("Rejected promise")
+});
+promise.catch(console.log)
 ```
 
 3. Create another promise. Now have it reject with a value of `Rejected Promise!` without using `setTimeout`. Print the contents of the promise after it has been rejected by passing console.log to `.catch` and also use `.finally` to log message `Promise Settled!`.
 
 ```js
 // Your code
- let promise = Promise.reject("Rejected Promise!")
-  .catch((data) => {
-    console.log(data);
-  })
-  .finally(() => {
-    console.log("Promise Settled !");
-  });
+ let promise = new Promise((resolve,reject) => {
+    reject("Rejected promise")
+});
+promise.catch(console.log).finally(() => console.log('Promise Settled"));
 ```
 
 4. What will be the output of the code below.
@@ -55,12 +52,13 @@ B
 
 ```js
 function wait (time){
-    return Promise.resolve(
-        setTimeout(()=>{
-            console.log('Promise Completed Sucessfully');
-        } , time)
-    )
+    return new Promise((resolve,reject) =>{
+    setTimeout(() => {
+      resolve("Promise Resolved!");
+    },time);
+    });
 }
+wait(1000).then(console.log);
 ```
 
 6. Do the following:
@@ -74,14 +72,15 @@ function wait (time){
 
 ```js
 // Your code
-let newPromise = Promise.resolve(21);
-newPromise.then((value) => value +10;)
-.then((value) => value +100;)
-then((value) => {
+let newPromise = new Promise((resolve,reject)){
+    resolve(21);
+    .then((value) => value +10;)
+    .then((value) => value +100;)
+    .then((value) => {
     if (value >100){
         throw new Error('Value is greater then 100');
     }
-}).catch((error) => console.error(error));
+}).catch((error) => console.log);
 ```
 
 7. Do the following:
@@ -94,19 +93,21 @@ then((value) => {
 
 ```js
 // Your code
-let promiseNew = Promise.resolve(['A']).then((data)=>{
+let promiseNew = new Promise((resolve.reject)){
+    resolve(['A'])
+    .then((data)=>{
     return data.concat('B');
-  })
-  .then(data=>{
-      data.reduce((acc,cv ,index)=>{
+    })
+   .then(data=>{
+     return data.reduce((acc,cv ,index)=>{
           acc[index] = cv;
           return acc;
-      },{})
-  })
+        },{})
+    })
   .then((data)=>{
       console.log(data);
-  })
-
+      })
+}
 ```
 
 8. Do the following:
@@ -118,17 +119,21 @@ let promiseNew = Promise.resolve(['A']).then((data)=>{
 
 ```js
 // Your code
-let first = Promise.resolve(1).then(data=>{
+let first = new Promise((resolve,reject)){
+    resolve(1)
+    }
+first.then(data=>{
     console.log(data);
     return 2;
-}).then(data=>{
+})
+.then(data=>{
     console.log(data);
     return 3;
-}).then(data=>{
+   })
+.then(data=>{
     console.log(data);
     return 4;
-})
-
+    })
 ```
 
 9. Do the following:
@@ -140,6 +145,21 @@ let first = Promise.resolve(1).then(data=>{
 
 ```js
 // Your code
+let first = new Promise((resolve,reject)){
+    resolve(1)
+    }
+first.then(data=>{
+    console.log(data);
+    return 2;
+})
+first.then(data=>{
+    console.log(data);
+    return 3;
+})
+first.then(data=>{
+    console.log(data);
+    return 4;
+})
 ```
 
 10. Try to understand the difference between the problem 8 and 9. Write your observation.
@@ -153,16 +173,15 @@ let first = Promise.resolve(1).then(data=>{
 
 ```js
 // Your code
-let promise  = Promise.resolve('John').then(()=>{
-    return Promise.resolve('Arya').then(data=>{
+let promise  = new Promise((resolve,reject)){
+   resolve('John')
+}.then((value) => {
+    return Promise.resolve('Arya')
+    .then(data=>{
         console.log(data);
-        return Promise.resolve(
-            setTimeout(()=>{
-                return 'Bran';
-            },2000)
-        ).then(data=>{
-            console.log(data);
-        })
+        return new Promise((resolve,reject) => {
+            setTimeout(() => resolve("Bran"),2000);
+        });
     })
-})
+}).then(console.log)
 ```
